@@ -1,0 +1,19 @@
+services:
+  web-app:
+    # build: . # used when the Dockerfile has the default name "Dockerfile"
+    build:
+      context: .
+      dockerfile: Dockerfile.dev # indicate the file that should be used to build the image
+    ports:
+      - "3000:3000"
+    volumes:
+      - /app/node_modules # do not try to map a folder up against "/app/node_modules" inside the container
+      - .:/app # map the current working directory (outside the container) into the "/app" folder inside the container
+  tests:
+    build:
+      context: .
+      dockerfile: Dockerfile.dev
+    volumes:
+      - /app/node_modules
+      - .:/app
+    command: [ "npm", "run", "test" ]
